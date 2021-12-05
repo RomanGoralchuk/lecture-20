@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+    <persistence-unit name="hospital">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>by.itacademy.javaenterprise.goralchuk.entity.client.Patient</class>
+        <class>by.itacademy.javaenterprise.goralchuk.entity.client.Prophylactic</class>
+        <class>by.itacademy.javaenterprise.goralchuk.entity.documents.ProphylacticLeave</class>
+        <class>by.itacademy.javaenterprise.goralchuk.entity.documents.SickLeave</class>
+        <exclude-unlisted-classes>true</exclude-unlisted-classes>
+
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="javax.persistence.jdbc.driver"
+                      value="org.mariadb.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:mysql://127.0.0.1:3306/hospital?useUnicode=true&amp;characterEncoding=UTF-8" />
+            <property name="javax.persistence.jdbc.user"
+                      value="user" />
+            <property name="javax.persistence.jdbc.password"
+                      value="userpass" />
+            <property name="packagesToScan"
+                      value="by.itacademy.javaenterprise.goralchuk.entityy.*" />
+            <property name="hibernate.physical_naming_strategy"
+                      value="by.itacademy.javaenterprise.goralchuk.naming.TableNamingStrategy" />
+        </properties>
+    </persistence-unit>
+</persistence>

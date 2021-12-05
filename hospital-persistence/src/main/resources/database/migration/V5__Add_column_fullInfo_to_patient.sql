@@ -1,0 +1,6 @@
+ALTER TABLE patient
+ADD (
+full_information CHAR(100) NULL DEFAULT NULL,
+updated_by DATE NOT NULL,
+age INT(10) NULL DEFAULT NULL
+);
