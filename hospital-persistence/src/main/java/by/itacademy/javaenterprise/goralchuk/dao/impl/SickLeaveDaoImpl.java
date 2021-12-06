@@ -6,6 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import javax.transaction.Transaction;
 import java.util.List;
 
 public class SickLeaveDaoImpl implements SickLeaveDao {
@@ -51,7 +56,23 @@ public class SickLeaveDaoImpl implements SickLeaveDao {
 
     @Override
     public long delete(Long id) {
-        return 0;
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+            CriteriaDelete<SickLeave> criteriaDelete = cb.createCriteriaDelete(SickLeave.class);
+            Root<SickLeave> root = criteriaDelete.from(SickLeave.class);
+
+            criteriaDelete.where(cb.equal(root.get("numberSickLeave"), id));
+
+            entityManager.getTransaction().begin();
+            entityManager.createQuery(criteriaDelete).executeUpdate();
+            entityManager.getTransaction().commit();
+            return id;
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            logger.error("Transaction failed {}", e.getMessage(), e);
+            return 0;
+        }
     }
 
     @Override
