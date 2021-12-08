@@ -4,19 +4,25 @@ import by.itacademy.javaenterprise.goralchuk.dao.ProphylacticDao;
 import by.itacademy.javaenterprise.goralchuk.entity.client.Prophylactic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
+@Repository
 public class ProphylacticDaoImpl implements ProphylacticDao {
     private static final Logger logger = LoggerFactory.getLogger(ProphylacticDaoImpl.class);
 
+    @PersistenceContext
     private EntityManager entityManager;
 
     public ProphylacticDaoImpl(EntityManager em) {
         this.entityManager = em;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Prophylactic find(Long id) {
         Prophylactic prophylactic = entityManager.find(Prophylactic.class, id);
@@ -29,6 +35,7 @@ public class ProphylacticDaoImpl implements ProphylacticDao {
         }
     }
 
+    @Transactional
     @Override
     public Prophylactic save(Prophylactic prophylactic) {
         try {
@@ -44,16 +51,19 @@ public class ProphylacticDaoImpl implements ProphylacticDao {
         }
     }
 
+    @Transactional
     @Override
     public Prophylactic update(Prophylactic patient) {
         return null;
     }
 
+    @Transactional
     @Override
     public long delete(Long id) {
         return 0;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Prophylactic> findAll() {
         return null;

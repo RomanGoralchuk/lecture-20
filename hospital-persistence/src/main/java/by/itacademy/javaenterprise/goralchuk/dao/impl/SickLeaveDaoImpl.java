@@ -4,24 +4,27 @@ import by.itacademy.javaenterprise.goralchuk.dao.SickLeaveDao;
 import by.itacademy.javaenterprise.goralchuk.entity.documents.SickLeave;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
-import javax.transaction.Transaction;
+import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.*;
+import java.util.Collections;
 import java.util.List;
 
+@Repository
 public class SickLeaveDaoImpl implements SickLeaveDao {
     private static final Logger logger = LoggerFactory.getLogger(SickLeaveDaoImpl.class);
 
+    @PersistenceContext
     private EntityManager entityManager;
 
     public SickLeaveDaoImpl(EntityManager em) {
         this.entityManager = em;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public SickLeave find(Long id) {
         SickLeave sickLeave = entityManager.find(SickLeave.class, id);
@@ -34,6 +37,7 @@ public class SickLeaveDaoImpl implements SickLeaveDao {
         }
     }
 
+    @Transactional
     @Override
     public SickLeave save(SickLeave sickLeave) {
         try {
@@ -49,11 +53,29 @@ public class SickLeaveDaoImpl implements SickLeaveDao {
         }
     }
 
+    @Transactional
     @Override
     public SickLeave update(SickLeave sickLeave) {
-        return null;
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+            CriteriaUpdate<SickLeave> criteriaUpdate = cb.createCriteriaUpdate(SickLeave.class);
+            Root<SickLeave> root = criteriaUpdate.from(SickLeave.class);
+
+            criteriaUpdate.where(cb.equal(root.get("numberSickLeave"), sickLeave.getNumberSickLeave()));
+
+            entityManager.getTransaction().begin();
+            entityManager.createQuery(criteriaUpdate).executeUpdate();
+            entityManager.getTransaction().commit();
+            return sickLeave;
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            logger.error("Transaction failed {}", e.getMessage(), e);
+            return null;
+        }
     }
 
+    @Transactional
     @Override
     public long delete(Long id) {
         try {
@@ -75,8 +97,15 @@ public class SickLeaveDaoImpl implements SickLeaveDao {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<SickLeave> findAll() {
-        return null;
+        try {
+            List<SickLeave> list = entityManager.createQuery("from SickLeave").getResultList();
+            return list;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return Collections.emptyList();
+        }
     }
 }

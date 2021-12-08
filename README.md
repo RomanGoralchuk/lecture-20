@@ -17,6 +17,7 @@ Hibernate Spring practices
 * FlyWay
 * Slf4j+Logback
 * MariaDB
+* DBPool Apache
 * Mockito
 * JUnit4
 * Docker-compose
