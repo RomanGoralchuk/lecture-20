@@ -18,10 +18,6 @@ public class ProphylacticDaoImpl implements ProphylacticDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public ProphylacticDaoImpl(EntityManager em) {
-        this.entityManager = em;
-    }
-
     @Transactional(readOnly = true)
     @Override
     public Prophylactic find(Long id) {

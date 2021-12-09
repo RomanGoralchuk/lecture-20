@@ -20,10 +20,6 @@ public class SickLeaveDaoImpl implements SickLeaveDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public SickLeaveDaoImpl(EntityManager em) {
-        this.entityManager = em;
-    }
-
     @Transactional(readOnly = true)
     @Override
     public SickLeave find(Long id) {

@@ -9,7 +9,7 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="classpath:*/dao/impl" />
+    <context:component-scan base-package="by.itacademy.javaenterprise.goralchuk.dao" />
     <context:property-placeholder location="classpath*:*.properties" />
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
@@ -28,8 +28,7 @@
 
         <property name="packagesToScan">
             <array>
-                <value>classpath*:*/entity/client</value>
-                <value>classpath*:*/entity/documents</value>
+                <value>by.itacademy.javaenterprise.goralchuk.entity</value>
             </array>
         </property>
 

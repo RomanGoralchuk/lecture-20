@@ -19,10 +19,6 @@ public class PatientDaoImpl implements PatientDao {
     @PersistenceContext
     private EntityManager entityManager;
 
-    public PatientDaoImpl(EntityManager em) {
-        this.entityManager = em;
-    }
-
     @Transactional(readOnly = true)
     @Override
     public Patient find(Long id) {
