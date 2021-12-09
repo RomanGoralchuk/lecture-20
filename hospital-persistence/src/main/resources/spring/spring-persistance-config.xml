@@ -9,7 +9,8 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="by.itacademy.javaenterprise.goralchuk.dao.impl" />
+    <context:component-scan base-package="classpath:*/dao/impl" />
+    <context:property-placeholder location="classpath:*.properties" />
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${db.driver.class}" />
@@ -24,8 +25,14 @@
         <property name="jpaVendorAdapter">
             <bean class="${spring.jpa.vendor.adapter}" />
         </property>
-        <property name="packagesToScan" value="by.itacademy.javaenterprise.goralchuk.entity.client,
-        by.itacademy.javaenterprise.goralchuk.entity.documents" />
+
+        <property name="packagesToScan">
+            <array>
+                <value>classpath*:*/entity/client</value>
+                <value>classpath*:*/entity/documents</value>
+            </array>
+        </property>
+
         <property name="jpaProperties">
             <props>
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
