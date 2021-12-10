@@ -28,8 +28,8 @@
         </triggeringPolicy>
     </appender>
 
-    <logger name="org.hibernate.type" level="ERROR" />
-    <logger name="org.hibernate" level="ERROR" />
+    <logger name="org.hibernate.type" level="DEBUG" />
+    <logger name="org.hibernate" level="DEBUG" />
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>

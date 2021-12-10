@@ -33,6 +33,7 @@
                 <li><a href="${pageContext.request.contextPath}">Model and View</a></li>
                 <li><a href="${pageContext.request.contextPath}/model">Model</a></li>
                 <li><a href="${pageContext.request.contextPath}/map">Map</a></li>
+                <li><a href="${pageContext.request.contextPath}/patients">Patients</a></li>
             </ul>
         </div>
     </div>

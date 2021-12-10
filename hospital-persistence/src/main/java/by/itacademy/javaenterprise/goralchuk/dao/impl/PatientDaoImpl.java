@@ -3,6 +3,7 @@ package by.itacademy.javaenterprise.goralchuk.dao.impl;
 import by.itacademy.javaenterprise.goralchuk.dao.PatientDao;
 import by.itacademy.javaenterprise.goralchuk.entity.client.LifeStatus;
 import by.itacademy.javaenterprise.goralchuk.entity.client.Patient;
+import by.itacademy.javaenterprise.goralchuk.entity.documents.SickLeave;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -10,6 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
@@ -51,7 +55,23 @@ public class PatientDaoImpl implements PatientDao {
     @Transactional
     @Override
     public Patient update(Patient patient) {
-        return null;
+        try {
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+            CriteriaUpdate<Patient> criteriaUpdate = cb.createCriteriaUpdate(Patient.class);
+            Root<Patient> root = criteriaUpdate.from(Patient.class);
+
+            criteriaUpdate.set(root.get("name"), patient.getName());
+
+/*            entityManager.getTransaction().begin();*/
+            entityManager.createQuery(criteriaUpdate).executeUpdate();
+/*            entityManager.getTransaction().commit();*/
+            return patient;
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            logger.error("Transaction failed {}", e.getMessage(), e);
+            return null;
+        }
     }
 
     @Transactional
@@ -72,6 +92,7 @@ public class PatientDaoImpl implements PatientDao {
         return null;
     }
 
+    @Transactional(readOnly = true)
     public long count() {
         Long count = entityManager
                 .createQuery("select count(m) from Patient m", Long.class)
