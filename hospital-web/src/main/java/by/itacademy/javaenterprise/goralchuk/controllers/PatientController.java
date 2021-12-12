@@ -3,10 +3,7 @@ package by.itacademy.javaenterprise.goralchuk.controllers;
 import by.itacademy.javaenterprise.goralchuk.entity.client.Patient;
 import by.itacademy.javaenterprise.goralchuk.services.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -26,7 +23,21 @@ public class PatientController {
         return view;
     }
 
-    @PostMapping("/patients")
+    @GetMapping("patients/{id}")
+    public ModelAndView modelAndView(@PathVariable Long id) {
+        Patient patient = patientService.findById(id);
+        ModelAndView view = new ModelAndView();
+        view.setViewName("patients");
+        if(patient != null){
+            view.addObject("patients", patient);
+        } else {
+            view.addObject("patients", "Sorry, I'm not found this data");
+        }
+        view.addObject("appName", patientService.getApplicationName());
+        return view;
+    }
+
+    @PostMapping(path = "/patients")
     public String add(@RequestBody Patient patient) {
         long count = patientService.saveNewPatient(patient);
         return count + "";

@@ -109,7 +109,15 @@ public class PatientDaoImpl implements PatientDao {
     @Transactional(readOnly = true)
     @Override
     public List<Patient> findAllPatientByLifeStatus(LifeStatus lifeStatus) {
-        return null;
+        try {
+            List<Patient> patientList = entityManager.createQuery("from Pet where type = :lifeStatus")
+                    .setParameter("lifeStatus", lifeStatus)
+                    .getResultList();
+            return patientList;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return Collections.emptyList();
+        }
     }
 
     @Transactional(readOnly = true)

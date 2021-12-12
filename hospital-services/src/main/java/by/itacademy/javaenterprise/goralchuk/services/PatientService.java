@@ -30,6 +30,16 @@ public class PatientService {
         return patientList;
     }
 
+    public Patient findById(Long id) {
+        Patient patient = null;
+        try {
+            patient = patientDao.find(id);
+        } catch (Exception e) {
+            logger.warn("Can't find patient", e);
+        }
+        return patient;
+    }
+
     public long saveNewPatient(Patient patient) {
         long count = 0;
         try {
