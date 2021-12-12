@@ -1,5 +1,6 @@
 package by.itacademy.javaenterprise.goralchuk.dao.impl;
 
+import by.itacademy.javaenterprise.goralchuk.entity.client.LifeStatus;
 import by.itacademy.javaenterprise.goralchuk.entity.client.Patient;
 import org.junit.*;
 import org.junit.rules.TestWatcher;
@@ -20,6 +21,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -106,21 +108,10 @@ public class PatientDaoImplTest {
 
     @Test
     public void whenDeletePeopleFromDatabase() {
-/*        Long expectedId = 10L;
-        Patient patient = new Patient();
-        patient.setPatientIdCardNumber(expectedId);
-
-
-
-
-        Long actualId = patientDao.delete(expectedId);
-
-        assertEquals(actualId, expectedId);
-    }*/
     }
 
     @Test
-    public void findAll() {
+    public void whenFindAllPatient() {
         List<Patient> patientsList = List.of(
                 new Patient(),
                 new Patient(),
@@ -138,10 +129,31 @@ public class PatientDaoImplTest {
     }
 
     @Test
-    public void findAllPatientByLifeStatus() {
+    public void whenFindAllPatientByLifeStatus() {
+        List<Patient> patientList = List.of(
+                new Patient(),
+                new Patient(),
+                new Patient());
+        patientList.get(1).setLifeStatus(LifeStatus.DEAD);
+
+        String validQuery = "from Patient where lifeStatus = :lifeStatus";
+        Query query = mock(Query.class);
+        when(entityManager.createQuery(validQuery)).thenReturn(query);
+        when(query.setParameter("lifeStatus", LifeStatus.ALIVE)).thenReturn(query);
+
+        List<Patient> expectedList = patientList.stream()
+                .filter(el -> el.getLifeStatus().equals(LifeStatus.ALIVE))
+                .collect(Collectors.toList());
+
+        when(query.getResultList()).thenReturn(expectedList);
+        logger.info("Expected list size {}", expectedList.size());
+        logger.info("Actual list size {}", patientDao.findAllPatientByLifeStatus(LifeStatus.ALIVE).size());
+
+        assertEquals("LifeStatusListTest", expectedList, patientDao.findAllPatientByLifeStatus(LifeStatus.ALIVE));
     }
 
     @Test
-    public void count() {
+    public void whenWeReturnTheCountOfRecords() {
+
     }
 }

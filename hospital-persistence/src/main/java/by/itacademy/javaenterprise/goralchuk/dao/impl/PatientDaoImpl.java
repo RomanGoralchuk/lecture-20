@@ -110,7 +110,7 @@ public class PatientDaoImpl implements PatientDao {
     @Override
     public List<Patient> findAllPatientByLifeStatus(LifeStatus lifeStatus) {
         try {
-            List<Patient> patientList = entityManager.createQuery("from Pet where type = :lifeStatus")
+            List<Patient> patientList = entityManager.createQuery("from Patient where lifeStatus = :lifeStatus")
                     .setParameter("lifeStatus", lifeStatus)
                     .getResultList();
             return patientList;
@@ -122,9 +122,8 @@ public class PatientDaoImpl implements PatientDao {
 
     @Transactional(readOnly = true)
     public long count() {
-        Long count = entityManager
-                .createQuery("select count(m) from Patient m", Long.class)
+        return entityManager
+                .createQuery("select count(e) from Patient e", Long.class)
                 .getSingleResult();
-        return count;
     }
 }
