@@ -16,4 +16,15 @@ public class Address {
     private String street;
     private Integer houseNumber;
     private Integer apartmentNumber;
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "post code=" + zipCode +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", houseNumber=" + houseNumber +
+                ", apartmentNumber=" + apartmentNumber +
+                '}';
+    }
 }

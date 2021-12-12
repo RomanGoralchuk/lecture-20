@@ -1,4 +1,4 @@
-INSERT INTO patient (name, surname, gender, birthday, zip_code, city, street, house_number,
+INSERT INTO patient (name, surname, gender, birthday, post_code, city, street, house_number,
 apartment_number)
 VALUES
 	('Vasiya', 'Petrov', 'male', '1980-10-10', 220017, 'Minsk', 'Tanka str.', 10, 53),

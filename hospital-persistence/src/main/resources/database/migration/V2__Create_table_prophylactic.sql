@@ -7,6 +7,5 @@ CREATE TABLE prophylactic (
     surname CHAR(50) NULL DEFAULT NULL,
     gender CHAR(50) NULL DEFAULT NULL,
     birthday DATE NULL DEFAULT NULL,
-    age INT(3) NULL DEFAULT NULL,
     PRIMARY KEY (id) USING BTREE
 );

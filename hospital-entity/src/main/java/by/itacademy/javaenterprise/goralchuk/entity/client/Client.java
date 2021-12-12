@@ -17,17 +17,19 @@ public abstract class Client {
     private Gender gender;
     @Temporal(TemporalType.DATE)
     private Date birthday;
-/*    @Formula(value ="SELECT DATEDIFF(CURDATE(), birthday)")*/
+    @Formula(value = "DATEDIFF(CURDATE(),birthday)")
     private Integer age;
-    @Transient
-    private String password;
+
+    private int getYearsOld(){
+        return age/365;
+    }
 
     @Override
     public String toString() {
         return "\n<br>name='" + name +
                 "', surname='" + surname +
-                "', gender=" + gender +
-                ", birthday=" + birthday +
-                ", age=" + age;
+                "', gender='" + gender.getCode() +
+                "', birthday=" + birthday +
+                ", age=" + getYearsOld();
     }
 }

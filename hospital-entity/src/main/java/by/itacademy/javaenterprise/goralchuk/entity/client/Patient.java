@@ -17,19 +17,19 @@ import java.time.LocalDateTime;
 public class Patient extends Client {
     @Id
     @Column(name = "id")
-    @SequenceGenerator( name = "patientSequence", sequenceName = "PATIENT_SEQUENCE", allocationSize = 1, initialValue = 1)
-    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "patientSequence")
+    @SequenceGenerator(name = "patientSequence", sequenceName = "PATIENT_SEQUENCE", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "patientSequence")
     @Check(constraints = "id > 0")
     private Long patientIdCardNumber;
     @Convert(converter = LifeStatus.LifeStatusConverter.class)
     private LifeStatus lifeStatus = LifeStatus.ALIVE;
     @AttributeOverrides({
-            @AttributeOverride(name = "postCode", column = @Column(name = "zipCode")),
+            @AttributeOverride(name = "zipCode", column = @Column(name = "postCode")),
     })
     @Embedded
     private Address address;
-    @Formula(value = "concat(name, surname)")
-	private String fullInformation;
+    @Formula(value = "concat(name ,' ' ,surname)")
+    private String fullInformation;
     @UpdateTimestamp
     private LocalDateTime updatedBy;
 

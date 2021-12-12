@@ -24,18 +24,6 @@ public class Prophylactic extends Client {
     @Column(name = "history")
     private String description;
 
-    public Prophylactic(String name, String surname, Gender gender, Date birthday,
-                        int age, String password, Date created, Date updated, String description) {
-        super(name, surname, gender, birthday, age, password);
-        this.created = created;
-        this.updated = updated;
-        this.description = description;
-    }
-
-    public Prophylactic(String description) {
-        this.description = description;
-    }
-
     @PrePersist
     protected void onCreate() {
         created = new Date();
