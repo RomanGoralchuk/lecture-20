@@ -25,9 +25,20 @@ public class PatientService {
         try {
             patientList = patientDao.findAll();
         } catch (Exception e) {
-            logger.warn("Cant show patients", e);
+            logger.warn("Can't show patients", e);
         }
         return patientList;
+    }
+
+    public long saveNewPatient(Patient patient) {
+        long count = 0;
+        try {
+            patientDao.save(patient);
+            count = patientDao.count();
+        } catch (Exception e) {
+            logger.warn("Can't save data", e);
+        }
+        return count;
     }
 
     public String getApplicationName() {
