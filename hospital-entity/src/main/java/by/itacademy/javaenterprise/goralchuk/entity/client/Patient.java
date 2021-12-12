@@ -24,38 +24,25 @@ public class Patient extends Client {
     private Long patientIdCardNumber;
     @Convert(converter = LifeStatus.LifeStatusConverter.class)
     private LifeStatus lifeStatus = LifeStatus.ALIVE;
-    @Embedded
     @AttributeOverrides({
             @AttributeOverride(name = "postCode", column = @Column(name = "zipCode")),
     })
+    @Embedded
     private Address address;
-    @Formula(value = "concat(id, address)")
+    @Formula(value = "concat(name, surname)")
 	private String fullInformation;
     @UpdateTimestamp
     private LocalDateTime updatedBy;
 
-    public Patient(String name, String surname, Gender gender, Date birthday, int age, String password,
-                   LifeStatus lifeStatus, Address address, String fullInformation, LocalDateTime updatedBy) {
-        super(name, surname, gender, birthday, age, password);
-        this.lifeStatus = lifeStatus;
-        this.address = address;
-        this.fullInformation = fullInformation;
-        this.updatedBy = updatedBy;
-    }
-
-    public Patient(Address address) {
-        this.address = address;
-    }
-
     @Override
     public String toString() {
-        return "\nPatient{" +
+        return "\n<br>Patient{" +
                 "ID=" + patientIdCardNumber +
-                "\nData update=" + updatedBy +
-                "\nFull info=" + fullInformation +
+                "\n<br>Data update=" + updatedBy +
+                "\n<br>Full info=" + fullInformation +
                 super.toString() +
                 ", lifeStatus='" + lifeStatus.getCode() + "'" +
-                "\n" + address +
+                "\n<br>" + address +
                 '}';
     }
 }

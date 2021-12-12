@@ -14,7 +14,12 @@ import org.slf4j.LoggerFactory;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -77,30 +82,59 @@ public class PatientDaoImplTest {
 
     @Test
     public void whenUpdatePatientToDatabase() {
-/*        Long expectedId = 10L;
-        String expectedText = "TestUpdate";
+        Long testId = 10L;
+
+        String expectedTestName = "TestName";
 
         Patient patient = new Patient();
-        patient.setPatientIdCardNumber(expectedId);
+        patient.setPatientIdCardNumber(testId);
 
-        Patient patientUpdateInfo = new Patient();
-        patientUpdateInfo.setPatientIdCardNumber(expectedId);
-        patientUpdateInfo.setName(expectedText);
+        Patient patientTwo = new Patient();
+        patient.setPatientIdCardNumber(testId);
+        patient.setName(expectedTestName);
 
+        when(entityManager.getTransaction()).thenReturn(entityTransaction);
 
-        logger.info("FIRST {}",patient.getName());
-        logger.info("SECOND {}",patientUpdateInfo.getName());
-        logger.info("RESULT {}",patientDao.update(patientUpdateInfo));
+        patientDao.update(patientTwo);
+        String actualTestName = patient.getName();
 
-        assertEquals(expectedText, patientDao.update(patientUpdateInfo).getName());*/
+        assertNotNull(patientDao.update(patientTwo));
+
+        logger.debug("Test result name from DB: {}", patient.getName());
+        assertEquals(expectedTestName, actualTestName);
     }
 
     @Test
-    public void delete() {
+    public void whenDeletePeopleFromDatabase() {
+/*        Long expectedId = 10L;
+        Patient patient = new Patient();
+        patient.setPatientIdCardNumber(expectedId);
+
+
+
+
+        Long actualId = patientDao.delete(expectedId);
+
+        assertEquals(actualId, expectedId);
+    }*/
     }
 
     @Test
     public void findAll() {
+        List<Patient> patientsList = List.of(
+                new Patient(),
+                new Patient(),
+                new Patient());
+        Query query = mock(Query.class);
+        when(entityManager.createQuery(anyString())).thenReturn(query);
+        when(query.getResultList()).thenReturn(patientsList);
+
+        logger.debug("TEST {}", patientDao.findAll());
+
+        int expectedSize = patientsList.size();
+        int actualSize = patientDao.findAll().size();
+
+        assertEquals("Test find all persons", expectedSize, actualSize);
     }
 
     @Test

@@ -12,8 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
+import java.util.Collections;
 import java.util.List;
 
 @Repository
@@ -56,16 +58,10 @@ public class PatientDaoImpl implements PatientDao {
     @Override
     public Patient update(Patient patient) {
         try {
-            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-
-            CriteriaUpdate<Patient> criteriaUpdate = cb.createCriteriaUpdate(Patient.class);
-            Root<Patient> root = criteriaUpdate.from(Patient.class);
-
-            criteriaUpdate.set(root.get("name"), patient.getName());
-
-/*            entityManager.getTransaction().begin();*/
-            entityManager.createQuery(criteriaUpdate).executeUpdate();
-/*            entityManager.getTransaction().commit();*/
+            entityManager.getTransaction().begin();
+            entityManager.refresh(patient);
+            entityManager.getTransaction().commit();
+            logger.debug("The transaction was successful - {}", patient.getPatientIdCardNumber());
             return patient;
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
@@ -77,13 +73,37 @@ public class PatientDaoImpl implements PatientDao {
     @Transactional
     @Override
     public long delete(Long id) {
-        return 0;
+        try {
+            entityManager.getTransaction().begin();
+
+            CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+
+            CriteriaDelete<Patient> criteriaDelete = cb.createCriteriaDelete(Patient.class);
+            Root<Patient> root = criteriaDelete.from(Patient.class);
+
+            criteriaDelete.where(cb.equal(root.get("patientIdCardNumber"), id));
+
+            entityManager.createQuery(criteriaDelete).executeUpdate();
+
+            entityManager.getTransaction().commit();
+            return id;
+        } catch (Exception e) {
+            entityManager.getTransaction().rollback();
+            logger.error("Transaction failed {}", e.getMessage(), e);
+            return 0;
+        }
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Patient> findAll() {
-        return null;
+        try {
+            List<Patient> patientList = entityManager.createQuery("FROM Patient").getResultList();
+            return patientList;
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            return Collections.emptyList();
+        }
     }
 
     @Transactional(readOnly = true)

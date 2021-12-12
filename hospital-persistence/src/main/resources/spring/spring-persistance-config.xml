@@ -27,14 +27,16 @@
         </property>
 
         <property name="packagesToScan">
-            <array>
-                <value>by.itacademy.javaenterprise.goralchuk.entity</value>
-            </array>
+            <value>by.itacademy.javaenterprise.goralchuk.entity</value>
         </property>
 
         <property name="jpaProperties">
             <props>
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.connection.autocommit">false</prop>
                 <prop key="hibernate.show_sql">${hibernate.show_sql}</prop>
+                <prop key="hibernate.format_sql">${hibernate.format_sql}</prop>
+                <prop key="hibernate.physical_naming_strategy">${hibernate.physical_naming_strategy}</prop>
             </props>
         </property>
     </bean>

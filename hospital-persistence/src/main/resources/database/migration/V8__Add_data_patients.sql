@@ -1,4 +1,5 @@
-INSERT INTO patient (id, name,surname, gender, birthday, life_status, zip_code, city, street, house_number, apartment_number, full_information, updated_by, age)
+INSERT INTO patient (name, surname, gender, birthday, zip_code, city, street, house_number,
+apartment_number)
 VALUES
-	(1, 'Vasiya', NULL, NULL, NULL, 'ALIVE', NULL, NULL, NULL, NULL, NULL, NULL, '2021-12-10', NULL),
-	(10, 'Petya', NULL, NULL, NULL, 'ALIVE', NULL, NULL, NULL, NULL, NULL, NULL, '2021-12-10', NULL);
+	('Vasiya', 'Petrov', 'male', '1980-10-10', 220017, 'Minsk', 'Tanka str.', 10, 53),
+	('Petya', 'Vasiliev', 'male', '1990-12-01', 220050, 'Minsk', 'Alibegova str.', 13, 26);
