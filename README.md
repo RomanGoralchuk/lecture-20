@@ -17,6 +17,7 @@ Hibernate Spring practices
 * FlyWay
 * Slf4j+Logback
 * MariaDB
+* DBPool Apache
 * Mockito
 * JUnit4
 * Docker-compose
@@ -24,4 +25,8 @@ Hibernate Spring practices
 * Jetty
 
 ### How to run
-See the pull request
+1. Start scripts:
+* `mvn clean package`
+* `docker-compose up`
+* `mvn compile flyway:migrate`
+2. Start servlet container and deploy war-file
